@@ -15,8 +15,18 @@ Environment
 :construction: Under Construction
 ==============================
 ******************
-DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
+### 1. DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
 --------------------
-* Saving the models
-* Sample Benchmarking
+* Saving the models 
+> Path: /models/{base_env_name}/{YY-mm-dd-HH-mm-ss-env_name}
+
+* Sample Benchmarking (MEAN durations vs Hyper parameters)
 * Plot the reward and duration
+* Show episode running by gif 
+* Enlarge pole angle limit (CartPoleObs-v1)
+
+### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)
+--------------------
+* Implement Breakout
+  * How to use frame skipping?
+  * How to handle rgp array input?
