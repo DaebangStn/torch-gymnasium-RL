@@ -1,3 +1,6 @@
+# this code is just a copy of the official pytorch tutorial
+# https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
+
 import gymnasium as gym
 import math
 import random
