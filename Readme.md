@@ -1,13 +1,22 @@
-# TODOs
+:star: RL agents and [Gymnasium](https://gymnasium.farama.org/) </br> environments in pyTorch :fire:
+==============================
+******************
 
-## DQN torch로 구현하기
+RL agents
+--------------------
+### 1. DQN
 
-https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
 
-#### 0. DQN 객체는 구현 완료
-#### 1. target net과 policy net을 구현 필요
-#### 2. replay buffer 구현 필요
-#### 3. loss function 구현 필요
-#### 4. train 함수 구현 필요
-#### 5. test 함수 구현 필요
-#### 6. plot 구현 필요
+Environment
+--------------------
+### 1. CartPole
+* Modified rewards to center the cart (CartPoleReward-v1)
+
+:construction: Under Construction
+==============================
+******************
+DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
+--------------------
+* Saving the models
+* Sample Benchmarking
+* Plot the reward and duration
