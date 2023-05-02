@@ -5,7 +5,8 @@
 RL agents
 --------------------
 ### 1. DQN
-
+* Saving the models 
+> Path: /saved-models/{base_env_name}/{YY-mm-dd-HH-mm-ss-env_id}
 
 Environment
 --------------------
@@ -17,9 +18,6 @@ Environment
 ******************
 ### 1. DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
 --------------------
-* Saving the models 
-> Path: /models/{base_env_name}/{YY-mm-dd-HH-mm-ss-env_name}
-
 * Sample Benchmarking (MEAN durations vs Hyper parameters)
 * Plot the reward and duration
 * Show episode running by gif 

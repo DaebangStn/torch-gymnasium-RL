@@ -1,7 +1,9 @@
+import os
+from datetime import datetime
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import torch.nn.functional as F
 
 import numpy as np
 
@@ -23,17 +25,19 @@ class DQN(nn.Module):
         logger.info(f'env obs dim : {self.num_observations},'
                     f' act dim : {self.num_actions}')
 
-        self.target = agents.utils.NetworkLayer3(self.num_observations, self.num_actions)
+        # saved parameters when you call save()
         self.policy = agents.utils.NetworkLayer3(self.num_observations, self.num_actions)
+        self.memory = agents.utils.ReplayMemory(10000)
+        self.epsilon = None
+
+        self.target = agents.utils.NetworkLayer3(self.num_observations, self.num_actions)
         self.target.load_state_dict(self.policy.state_dict())
 
         self.device = device
-        self.memory = agents.utils.ReplayMemory(10000)
         self.counter = 0
 
         self.hyper_params = None
         self.optimizer = None
-        self.epsilon = None
 
     def train_with_episodes(self, hyper_param, early_stop=True):
         self.hyper_params = hyper_param
@@ -84,7 +88,7 @@ class DQN(nn.Module):
                 policy_net_state_dict = self.policy.state_dict()
                 for key in policy_net_state_dict:
                     target_net_state_dict[key] = self.hyper_params.tau * policy_net_state_dict[key] + \
-                                                    (1 - self.hyper_params.tau) * target_net_state_dict[key]
+                                                 (1 - self.hyper_params.tau) * target_net_state_dict[key]
 
                 self.target.load_state_dict(target_net_state_dict)
                 self.logger.debug(f'episode: {episode}, step: {t} policy network updated')
@@ -100,9 +104,8 @@ class DQN(nn.Module):
             f'DQN model training completed and mean last 50 reward: {np.mean(rewards_list_for_episodes[-50:])}')
 
     def get_action(self, state):
-        if self.hyper_params is None or self.epsilon is None:
-            self.logger.error('Hyper Parameters are empty. call optim_model() first')
-            self.logger.warning('returning random action')
+        if self.epsilon is None:
+            self.logger.warning('Epsilon is empty. returning random action')
             return np.random.choice(self.env.action_space, 1)
 
         if np.random.rand() < self.epsilon:
@@ -154,3 +157,27 @@ class DQN(nn.Module):
 
         torch.nn.utils.clip_grad_value_(self.policy.parameters(), 100)
         self.optimizer.step()
+
+    # Saving the models
+    # Path: /base_dir/{YY-mm-dd-HH-mm-ss-env_id}
+    def save(self, base_dir):
+        if not os.path.exists(base_dir):
+            self.logger.warning(f'{base_dir} does not exist. creating directory')
+            os.makedirs(base_dir)
+
+        filename = datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '-' + self.env.unwrapped.spec.id + '.pth'
+
+        self.logger.info(f'saving model to {base_dir} with filename: {filename}')
+
+        torch.save({
+            'policy_net_dict': self.policy.state_dict(),
+            'epsilon': self.epsilon,
+            'replay_memory': self.memory,
+        }, base_dir + '/' + filename)
+
+    def load(self, path):
+        checkpoint = torch.load(path)
+        self.policy.load_state_dict(checkpoint['policy_net_dict'])
+        self.target.load_state_dict(checkpoint['policy_net_dict'])
+        self.epsilon = checkpoint['epsilon']
+        self.memory = checkpoint['replay_memory']

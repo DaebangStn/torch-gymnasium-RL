@@ -1,5 +1,6 @@
 .idea
 venv
+*.pth
 *.log
 
 *.pyc

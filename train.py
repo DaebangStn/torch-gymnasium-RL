@@ -5,7 +5,6 @@ import torch
 import envs
 import agents
 
-import logging
 import logging.config
 import json
 
@@ -41,3 +40,6 @@ if __name__ == '__main__':
     model = agents.dqn.DQN(env, device, logger_model).to(device)
     logger.info(f'training start: {hyper_params}')
     model.train_with_episodes(hyper_params)
+
+    # save model in the root/saved_models/cartpole
+    model.save('./saved-models/cartpole')
