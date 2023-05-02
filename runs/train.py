@@ -13,7 +13,7 @@ import json
 
 hyper_params = \
     agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
-                             epsilon_decay=0.995, batch_size=128, num_episodes=10,
+                             epsilon_decay=0.995, batch_size=128, num_episodes=100,
                              target_update=5, render=False, tau=0.005, max_steps=1000)
 
 environment_id = 'CartPoleReward-v1'
@@ -48,3 +48,5 @@ if __name__ == '__main__':
 
     # save model in the root/saved_models/cartpole
     model.save(project_base_dir + '/' + model_saving_path)
+
+    logger.error('training ended')

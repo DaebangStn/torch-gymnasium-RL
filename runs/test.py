@@ -40,3 +40,5 @@ if __name__ == '__main__':
     logger.info(f'testing start. running {num_run} times. model with {model_saving_path}')
     model.test_with_episodes(num_run)
 
+    logger.error('test ended')
+

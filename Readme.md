@@ -13,6 +13,15 @@ Environment
 ### 1. CartPole
 * Modified rewards to center the cart (CartPoleReward-v1)
 
+Operating
+--------------------
+### 1. Training (/train.py)
+### 2. Testing (/test.py)
+### 3. Logging
+* at the local console - WARNING
+* at the file (TimedRotatingFileHandler) - DEBUG
+* at the discord channel (discord_webhook) - ERROR
+
 :construction: Under Construction
 ==============================
 ******************
@@ -28,8 +37,3 @@ Environment
 * Implement Breakout
   * How to use frame skipping?
   * How to handle rgp array input?
-
-Training & Testing
---------------------
-### 1. Training (/train.py)
-### 2. Testing (/test.py)
