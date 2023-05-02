@@ -2,25 +2,27 @@
 ==============================
 ******************
 
-RL agents
+RL agents (/agents)
 --------------------
-### 1. DQN
+### 1. DQN 
 * Saving the models 
 > Path: /saved-models/{base_env_name}/{YY-mm-dd-HH-mm-ss-env_id}
 
-Environment
+Environment (/envs)
 --------------------
 ### 1. CartPole
 * Modified rewards to center the cart (CartPoleReward-v1)
 
-Operating
+Running (/runs)
 --------------------
-### 1. Training (/train.py)
-### 2. Testing (/test.py)
-### 3. Logging
-* at the local console - WARNING
-* at the file (TimedRotatingFileHandler) - DEBUG
-* at the discord channel (discord_webhook) - ERROR
+### 1. Training (train.py)
+### 2. Testing (test.py)
+
+Logging (config.ini)
+--------------------
+* local console - WARNING
+* file in /logs (TimedRotatingFileHandler) - DEBUG
+* discord channel (discord_webhook) - None
 
 :construction: Under Construction
 ==============================
