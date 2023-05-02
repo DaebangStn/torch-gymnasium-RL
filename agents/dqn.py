@@ -39,6 +39,42 @@ class DQN(nn.Module):
         self.hyper_params = None
         self.optimizer = None
 
+    def test_with_episodes(self, num_episodes=10):
+        if self.epsilon is None:
+            self.logger.error('trained model is not loaded. quitting...')
+            return
+
+        rewards_list_for_episodes = []
+
+        for episode in range(num_episodes):
+            state, info = self.env.reset()
+            state = torch.tensor(state, device=self.device, dtype=torch.float32).unsqueeze(0)
+            reward_for_episode = 0
+
+            self.logger.info(f'episode: {episode} started.')
+
+            for t in range(1000):
+                action = self.get_action(state)
+                next_state, reward, terminated, truncated, _ = self.env.step(action.item())
+                reward_for_episode += reward
+                state = torch.tensor(next_state, device=self.device, dtype=torch.float32).unsqueeze(0)
+
+                if terminated:
+                    self.logger.warning(f'episode: {episode}, terminated in step: {t}, reward: {reward_for_episode}')
+                    break
+
+                if truncated:
+                    self.logger.warning(f'episode: {episode}, truncated in step: {t}, reward: {reward_for_episode}')
+                    break
+
+                if t == 999:
+                    self.logger.warning(f'episode: {episode}, finished in step: {t}, reward: {reward_for_episode}')
+
+            rewards_list_for_episodes.append(reward_for_episode)
+
+        self.logger.warning(f'average reward for {num_episodes} episodes: {np.mean(rewards_list_for_episodes)}')
+        return rewards_list_for_episodes
+
     def train_with_episodes(self, hyper_param, early_stop=True):
         self.hyper_params = hyper_param
         self.epsilon = hyper_param.epsilon_begin
@@ -176,6 +212,11 @@ class DQN(nn.Module):
         }, base_dir + '/' + filename)
 
     def load(self, path):
+        if not os.path.exists(path):
+            self.logger.error(f'{path} does not exist. loading model failed')
+            return
+        self.logger.info(f'loading model from {path}')
+
         checkpoint = torch.load(path)
         self.policy.load_state_dict(checkpoint['policy_net_dict'])
         self.target.load_state_dict(checkpoint['policy_net_dict'])

@@ -1,5 +1,6 @@
 {
     "version": 1,
+    "disable_existing_loggers": false,
     "formatters": {
         "basic": {
             "format": "%(asctime)s-%(name)s-%(levelname)s-%(message)s",
@@ -19,7 +20,34 @@
             "class": "logging.FileHandler",
             "level": "DEBUG",
             "formatter": "basic",
-            "filename": "info.log"
+            "filename": "run.log"
+        },
+
+        "file_handler_test": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "formatter": "basic",
+            "filename": "test.log"
+        },
+
+        "file_handler_train": {
+            "class": "logging.FileHandler",
+            "level": "DEBUG",
+            "formatter": "basic",
+            "filename": "train.log"
+        }
+    },
+
+    "loggers": {
+        "TEST": {
+            "level": "DEBUG",
+            "handlers": ["console", "file_handler_test"],
+            "propagate": false
+        },
+        "TRAIN": {
+            "level": "DEBUG",
+            "handlers": ["console", "file_handler_train"],
+            "propagate": false
         }
     },
 
