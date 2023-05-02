@@ -4,22 +4,24 @@ import torch
 
 import envs
 import agents
+from utils.find_project_base_dir import find_project_base_dir
 
 import logging.config
 import json
 
-
 if __name__ == '__main__':
     hyper_params = \
         agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
-                                 epsilon_decay=0.995, batch_size=128, num_episodes=1000,
+                                 epsilon_decay=0.995, batch_size=128, num_episodes=10,
                                  target_update=5, render=False, tau=0.005, max_steps=1000)
 
-    with open('logger.json', 'rt') as f:
-        config = json.load(f)
+    project_base_dir = find_project_base_dir()
 
-    logging.config.dictConfig(config)
-    logger = logging.getLogger('Train')
+    with open(project_base_dir + '/' + 'logger.json', 'rt') as f:
+        logger_config = json.load(f)
+
+    logging.config.dictConfig(logger_config)
+    logger = logging.getLogger('TRAIN')
 
     render_mode = None
     if hyper_params.render:
@@ -42,4 +44,4 @@ if __name__ == '__main__':
     model.train_with_episodes(hyper_params)
 
     # save model in the root/saved_models/cartpole
-    model.save('./saved-models/cartpole')
+    model.save(project_base_dir + '/saved-models/cartpole')

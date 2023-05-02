@@ -28,3 +28,8 @@ Environment
 * Implement Breakout
   * How to use frame skipping?
   * How to handle rgp array input?
+
+Training & Testing
+--------------------
+### 1. Training (/train.py)
+### 2. Testing (/test.py)
