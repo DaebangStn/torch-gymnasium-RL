@@ -1,1 +1,14 @@
-def
+from matplotlib import animation
+import matplotlib.pyplot as plt
+
+
+def save_frames_as_gif(path, frames):
+    plt.figure(figsize=(frames[0].shape[1] / 72.0, frames[0].shape[0] / 72.0), dpi=72)
+    patch = plt.imshow(frames[0])
+    plt.axis('off')
+
+    def animate(i):
+        patch.set_data(frames[i])
+
+    anim = animation.FuncAnimation(plt.gcf(), animate, frames=len(frames), interval=50)
+    anim.save(path, writer='imagemagick', fps=60)

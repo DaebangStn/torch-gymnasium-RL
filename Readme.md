@@ -17,6 +17,7 @@ Running (/runs)
 --------------------
 ### 1. Training (train.py)
 ### 2. Testing (test.py)
+* Show episode running by gif 
 
 Logging (config.ini)
 --------------------
@@ -31,7 +32,7 @@ Logging (config.ini)
 --------------------
 * Sample Benchmarking (MEAN durations vs Hyper parameters)
 * Plot the reward and duration
-* Show episode running by gif 
+* Show episode running by gif (add steps)
 * Enlarge pole angle limit (CartPoleObs-v1)
 
 ### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)

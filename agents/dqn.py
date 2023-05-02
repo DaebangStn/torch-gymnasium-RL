@@ -39,7 +39,7 @@ class DQN(nn.Module):
         self.hyper_params = None
         self.optimizer = None
 
-    def test_with_episodes(self, num_episodes=10):
+    def test_with_episodes(self, num_episodes=10, frames=None):
         if self.epsilon is None:
             self.logger.error('trained model is not loaded. quitting...')
             return
@@ -54,6 +54,9 @@ class DQN(nn.Module):
             self.logger.info(f'episode: {episode} started.')
 
             for t in range(1000):
+                if frames is not None:
+                    frames.append(self.env.render())
+
                 action = self.get_action(state)
                 next_state, reward, terminated, truncated, _ = self.env.step(action.item())
                 reward_for_episode += reward

@@ -9,7 +9,7 @@ import agents
 from utils.find_project_base_dir import find_project_base_dir
 
 import logging.config
-import json
+
 
 hyper_params = \
     agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
