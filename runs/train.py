@@ -8,12 +8,14 @@ import envs
 import agents
 from utils.find_project_base_dir import find_project_base_dir
 
+from discord_logging.handler import DiscordHandler
+import python_telegram_logger
 import logging.config
 
 
 hyper_params = \
     agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
-                             epsilon_decay=0.995, batch_size=128, num_episodes=100,
+                             epsilon_decay=0.995, batch_size=128, num_episodes=10,
                              target_update=5, render=False, tau=0.005, max_steps=1000)
 
 environment_id = 'CartPoleReward-v1'

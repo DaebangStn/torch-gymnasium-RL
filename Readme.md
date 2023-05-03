@@ -40,3 +40,7 @@ Logging (config.ini)
 * Implement Breakout
   * How to use frame skipping?
   * How to handle rgp array input?
+
+Logging (config.ini)
+--------------------
+* telegram bot - not working, seems to there is an error on handler emit method
