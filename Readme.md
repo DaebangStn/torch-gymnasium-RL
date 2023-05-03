@@ -8,7 +8,7 @@ RL agents (/agents)
 * Saving the models 
 > Path: /saved-models/{base_env_name}/{YY-mm-dd-HH-mm-ss-env_id}
 
-Environment (/envs)
+Environments (/envs)
 --------------------
 ### 1. CartPole
 * Modified rewards to center the cart (CartPoleReward-v1)
@@ -18,6 +18,12 @@ Running (/runs)
 ### 1. Training (train.py)
 ### 2. Testing (test.py)
 * Show episode running by gif 
+### 3. Benchmarking (benchmark.py)
+* Simple Benchmarking (Hyper parameters)
+
+Plotting (/plots)
+--------------------
+* Plot the reward and steps
 
 Logging (config.ini)
 --------------------
@@ -25,14 +31,12 @@ Logging (config.ini)
 * file in /logs (TimedRotatingFileHandler) - DEBUG
 * discord channel (discord_webhook) - None
 
+
 :construction: Under Construction
 ==============================
 ******************
 ### 1. DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
 --------------------
-* Sample Benchmarking (MEAN durations vs Hyper parameters)
-* Plot the reward and duration
-* Show episode running by gif (add steps)
 * Enlarge pole angle limit (CartPoleObs-v1)
 
 ### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)

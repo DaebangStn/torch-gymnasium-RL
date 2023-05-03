@@ -19,7 +19,6 @@ class HyperParams(NamedTuple):
     tau: float = 0.005
     target_update: int = 5
     render: bool = False
-    max_steps: int = 1000
 
 
 class ReplayMemory(object):

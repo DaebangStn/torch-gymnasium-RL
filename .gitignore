@@ -1,6 +1,8 @@
 .idea
 venv
 *.pth
+*.pkl
+*.jpg
 *.log*
 secrets.env
 

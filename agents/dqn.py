@@ -1,3 +1,5 @@
+from gymnasium.wrappers import TimeLimit
+
 import os
 from datetime import datetime
 
@@ -13,16 +15,20 @@ import agents
 class DQN(nn.Module):
     def __init__(self, env, device, logger):
         super(DQN, self).__init__()
-
-        self.env = env
         self.logger = logger
 
-        logger.info(f'using environments: {env.unwrapped.spec.id}')
+        if env._max_episode_steps is None:
+            self.logger.warning('max_episode_steps is not set. setting it to 500')
+            self.env = TimeLimit(env, max_episode_steps=500)
+        else:
+            self.env = env
+
+        logger.debug(f'using environments: {env.unwrapped.spec.id}')
 
         self.num_observations = self.env.observation_space.shape[0]
         self.num_actions = self.env.action_space.n
 
-        logger.info(f'env obs dim : {self.num_observations},'
+        logger.debug(f'env obs dim : {self.num_observations},'
                     f' act dim : {self.num_actions}')
 
         # saved parameters when you call save()
@@ -40,43 +46,50 @@ class DQN(nn.Module):
         self.optimizer = None
 
     def test_with_episodes(self, num_episodes=10, frames=None):
+
         if self.epsilon is None:
             self.logger.error('trained model is not loaded. quitting...')
             return
 
         rewards_list_for_episodes = []
+        steps_list_for_episodes = []
 
         for episode in range(num_episodes):
             state, info = self.env.reset()
             state = torch.tensor(state, device=self.device, dtype=torch.float32).unsqueeze(0)
             reward_for_episode = 0
+            steps_reached = 0
 
-            self.logger.info(f'episode: {episode} started.')
+            self.logger.debug(f'episode: {episode} started.')
 
-            for t in range(1000):
+            while True:
+                if steps_reached % 250 == 0:
+                    self.logger.info(f'episode: {episode}, step: {steps_reached}/{self.env._max_episode_steps}')
+
                 if frames is not None:
                     frames.append(self.env.render())
 
                 action = self.get_action(state)
-                next_state, reward, terminated, truncated, _ = self.env.step(action.item())
+                next_state, reward, terminated, truncated, info = self.env.step(action.item())
                 reward_for_episode += reward
+                steps_reached += 1
                 state = torch.tensor(next_state, device=self.device, dtype=torch.float32).unsqueeze(0)
 
                 if terminated:
-                    self.logger.warning(f'episode: {episode}, terminated in step: {t}, reward: {reward_for_episode}')
+                    self.logger.info(f'episode: {episode}, terminated in step: {steps_reached}, '
+                                     f'reward: {reward_for_episode}')
                     break
 
                 if truncated:
-                    self.logger.warning(f'episode: {episode}, truncated in step: {t}, reward: {reward_for_episode}')
+                    self.logger.info(f'episode: {episode}, truncated in step: {steps_reached}, '
+                                     f'reward: {reward_for_episode}')
                     break
 
-                if t == 999:
-                    self.logger.warning(f'episode: {episode}, finished in step: {t}, reward: {reward_for_episode}')
-
             rewards_list_for_episodes.append(reward_for_episode)
+            steps_list_for_episodes.append(steps_reached)
 
         self.logger.warning(f'average reward for {num_episodes} episodes: {np.mean(rewards_list_for_episodes)}')
-        return rewards_list_for_episodes
+        return rewards_list_for_episodes, steps_list_for_episodes
 
     def train_with_episodes(self, hyper_param, early_stop=True):
         self.hyper_params = hyper_param
@@ -84,17 +97,23 @@ class DQN(nn.Module):
 
         self.optimizer = optim.AdamW(self.policy.parameters(), lr=self.hyper_params.lr, amsgrad=True)
         rewards_list_for_episodes = []
+        steps_list_for_episodes = []
 
         for episode in range(self.hyper_params.num_episodes):
             state, info = self.env.reset()
             state = torch.tensor(state, device=self.device, dtype=torch.float32).unsqueeze(0)
             reward_for_episode = 0
             reward_trend_list_for_episode = []
+            steps_reached = 0
 
-            for t in range(self.hyper_params.max_steps):
+            if episode % 50 == 0:
+                self.logger.info(f'episode: {episode} started.')
+
+            while True:
                 action = self.get_action(state)
                 next_state, reward, terminated, truncated, _ = self.env.step(action.item())
                 reward_for_episode += reward
+                steps_reached += 1
 
                 reward = torch.tensor([reward], device=self.device, dtype=torch.float32).unsqueeze(0)
 
@@ -107,15 +126,15 @@ class DQN(nn.Module):
                 reward_trend_list_for_episode.append(reward_for_episode)
 
                 if terminated:
-                    self.logger.warning(f'episode: {episode}, terminated in step: {t}, reward: {reward_for_episode}')
+                    self.logger.debug(f'episode: {episode}, terminated in step: {steps_reached}, reward: {reward_for_episode}')
                     break
 
                 if truncated:
-                    self.logger.warning(f'episode: {episode}, truncated in step: {t}, reward: {reward_for_episode}')
+                    self.logger.debug(f'episode: {episode}, truncated in step: {steps_reached}, reward: {reward_for_episode}')
                     break
 
                 if np.mean(reward_trend_list_for_episode[-10:]) > 200 and early_stop:
-                    self.logger.warning(f'episode: {episode}, early stopped in step: {t}, reward: {reward_for_episode}')
+                    self.logger.debug(f'episode: {episode}, early stopped in step: {steps_reached}, reward: {reward_for_episode}')
                     break
 
                 state = next_state
@@ -133,14 +152,17 @@ class DQN(nn.Module):
                 self.logger.debug(f'episode: {episode}, step: {t} policy network updated')
 
             rewards_list_for_episodes.append(reward_for_episode)
+            steps_list_for_episodes.append(steps_reached)
             self.epsilon = max(self.epsilon * self.hyper_params.epsilon_decay, self.hyper_params.epsilon_end)
 
             if np.mean(rewards_list_for_episodes[-50:]) > 200 and early_stop:
                 self.logger.warning(f'DQN model training early completed in episode: {episode}')
                 break
 
-        self.logger.warning(
+        self.logger.info(
             f'DQN model training completed and mean last 50 reward: {np.mean(rewards_list_for_episodes[-50:])}')
+
+        return rewards_list_for_episodes, steps_list_for_episodes
 
     def get_action(self, state):
         if self.epsilon is None:
