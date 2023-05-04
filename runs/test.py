@@ -21,7 +21,7 @@ model_saving_path = 'out/saved-models/cartpole/2023-05-03-22-27-49-CartPoleRewar
 gif_saving_path = 'out/gifs/2023-05-04-13-02-45-CartPoleReward-v1.pth'
 
 random_seed = 21
-default_max_steps = 777
+default_max_steps = 1500
 
 if __name__ == '__main__':
     project_base_dir = find_project_base_dir()

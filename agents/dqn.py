@@ -149,7 +149,7 @@ class DQN(nn.Module):
                                                  (1 - self.hyper_params.tau) * target_net_state_dict[key]
 
                 self.target.load_state_dict(target_net_state_dict)
-                self.logger.debug(f'episode: {episode}, step: {t} policy network updated')
+                self.logger.debug(f'episode: {episode}, step: {steps_reached} policy network updated')
 
             rewards_list_for_episodes.append(reward_for_episode)
             steps_list_for_episodes.append(steps_reached)

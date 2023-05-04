@@ -12,6 +12,7 @@ Environments (/envs)
 --------------------
 ### 1. CartPole
 * Modified rewards to center the cart (CartPoleReward-v1)
+* Enlarge pole angle limit (CartPoleObs-v1)
 
 Running (/runs)
 --------------------
@@ -37,7 +38,6 @@ Logging (config.ini)
 ******************
 ### 1. DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
 --------------------
-* Enlarge pole angle limit (CartPoleObs-v1)
 
 ### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)
 --------------------

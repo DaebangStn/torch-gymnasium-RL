@@ -15,9 +15,10 @@ import logging.config
 default_hyper_params = \
     agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
                              epsilon_decay=0.995, batch_size=128, num_episodes=100,
-                             target_update=5, render=False, tau=0.005)
+                             target_update=5, render=True, tau=0.005)
 
-default_environment_id = 'CartPoleReward-v1'
+#default_environment_id = 'CartPoleReward-v1'
+default_environment_id = 'CartPoleObs-v1'
 # default_environment_id = 'CartPole-v1'
 
 default_model_saving_path = 'out/saved-models/cartpole'
@@ -45,7 +46,7 @@ def train(hyper_params=default_hyper_params, environment_id=default_environment_
     if hyper_params.render:
         render_mode = 'human'
 
-    env = gym.make(environment_id, render_mode=render_mode)
+    env = gym.make(environment_id, render_mode=render_mode, theta_threshold=60)
     env = TimeLimit(env, max_episode_steps=default_max_steps)
 
     logger.info(f'loading environments: {env.unwrapped.spec.id}')

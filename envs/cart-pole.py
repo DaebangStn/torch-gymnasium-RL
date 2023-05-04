@@ -1,4 +1,5 @@
 from gymnasium.envs.classic_control import CartPoleEnv
+import math
 
 
 class CartPoleRewardEnv1(CartPoleEnv):
@@ -19,3 +20,11 @@ class CartPoleRewardEnv1(CartPoleEnv):
             reward = reward - abs(cart_position) * 0.5 - abs(pole_angle) * 1.0
 
         return reward
+
+
+class CartPoleObsEnv1(CartPoleEnv):
+    def __init__(self, render_mode=None, theta_threshold=12):
+        super().__init__()
+        self.render_mode = render_mode
+        self.theta_threshold_radians = theta_threshold * 2 * math.pi / 360
+
