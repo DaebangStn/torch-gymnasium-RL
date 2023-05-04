@@ -14,12 +14,13 @@ from utils.save_frames_as_gif import save_frames_as_gif
 
 num_run = 1
 
-render_as_gif = False
+render_as_gif = True
 #environment_id = 'CartPoleReward-v1'
 environment_id = 'CartPoleDist-v1'
 
-model_saving_path = 'out/saved-models/cartpole/2023-05-03-22-27-49-CartPoleReward-v1.pth'
-gif_saving_path = 'out/gifs/2023-05-04-13-02-45-CartPoleReward-v1.pth'
+model_filename = '2023-05-03-22-27-49-CartPoleReward-v1.pth'
+model_saving_dir = 'out/saved-models/cartpole'
+gif_saving_dir = 'out/gifs'
 
 random_seed = 20
 default_max_steps = 1500
@@ -48,7 +49,8 @@ if __name__ == '__main__':
     logger.debug(f'using device: {device}')
 
     model = agents.dqn.DQN(env, device, logger).to(device)
-    model.load(os.path.join(project_base_dir, model_saving_path))
+    model_saving_path = os.path.join(project_base_dir, model_saving_dir, model_filename)
+    model.load(model_saving_path)
     logger.info(f'testing start. running {num_run} times. model with {model_saving_path}')
 
     if render_as_gif:
@@ -58,6 +60,7 @@ if __name__ == '__main__':
 
     model.test_with_episodes(num_run, frames=frames)
 
+    gif_saving_path = os.path.join(project_base_dir, gif_saving_dir, os.path.splitext(model_filename)[0] + '.gif')
     if render_as_gif:
         save_frames_as_gif(os.path.join(project_base_dir, gif_saving_path), frames, logger)
 

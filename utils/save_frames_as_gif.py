@@ -11,7 +11,7 @@ frame_pickle_path = 'C:/Users/geon/PycharmProjects/torch-gymnasium-RL/logs/2023-
 def save_frames_as_gif(path, _frames, _logger, save_pickle=True):
     if save_pickle:
         path_frames = os.path.splitext(path)[0] + '.pkl'
-        _logger.info(f'save frames as gif: {path}. frames: {path_frames}')
+        _logger.info(f'save frames as gif to: {path}. frames: {path_frames}')
         with open(path_frames, 'wb') as f:
             pickle.dump(_frames, f)
     else:
@@ -22,18 +22,18 @@ def save_frames_as_gif(path, _frames, _logger, save_pickle=True):
     plt.axis('off')
 
     text_annotation = plt.annotate(
-        "Frame: 0", (50, 50), fontsize=12, color="black", fontweight="bold"
+        "Frame: 0", (300, 0), fontsize=12, color="black", fontweight="bold"
     )
 
     def animate(i):
         if i % 100 == 0:
-            _logger.info(f"save frames {i}")
+            _logger.info(f"save frames {i}/{len(_frames)}")
         # overlay text to the current patch
         patch.set_data(_frames[i])
         text_annotation.set_text(f"Frame: {i}")
 
-    _logger.info(f'saving as gif started. total frames: {len(_frames)}')
     anim = animation.FuncAnimation(plt.gcf(), animate, frames=len(_frames), interval=50)
+    _logger.info(f'saving as gif started.')
     anim.save(path, writer='imagemagick', fps=60)
 
 
