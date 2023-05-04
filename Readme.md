@@ -43,6 +43,7 @@ Logging (config.ini)
 :construction: Under Construction
 ==============================
 ******************
+* Restructure the whole project to Wrapper based
 
 Logging (config.ini)
 --------------------
