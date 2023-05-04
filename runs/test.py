@@ -15,12 +15,13 @@ from utils.save_frames_as_gif import save_frames_as_gif
 num_run = 1
 
 render_as_gif = False
-environment_id = 'CartPoleReward-v1'
+#environment_id = 'CartPoleReward-v1'
+environment_id = 'CartPoleDist-v1'
 
 model_saving_path = 'out/saved-models/cartpole/2023-05-03-22-27-49-CartPoleReward-v1.pth'
 gif_saving_path = 'out/gifs/2023-05-04-13-02-45-CartPoleReward-v1.pth'
 
-random_seed = 21
+random_seed = 20
 default_max_steps = 1500
 
 if __name__ == '__main__':
@@ -36,7 +37,7 @@ if __name__ == '__main__':
     else:
         render_mode = "human"
 
-    env = gym.make(environment_id, render_mode=render_mode)
+    env = gym.make(environment_id, render_mode=render_mode, theta_threshold=90)
     env = TimeLimit(env, max_episode_steps=default_max_steps)
     logger.info(f'loading environments: {env.unwrapped.spec.id}')
 

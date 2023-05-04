@@ -13,6 +13,7 @@ Environments (/envs)
 ### 1. CartPole
 * Modified rewards to center the cart (CartPoleReward-v1)
 * Enlarge pole angle limit (CartPoleObs-v1)
+* Random disturbance (CartPoleDisturbance-v1)
 
 Running (/runs)
 --------------------
@@ -36,8 +37,9 @@ Logging (config.ini)
 :construction: Under Construction
 ==============================
 ******************
-### 1. DQN [(torch tutorial)](https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html)
+### 1. CartPole
 --------------------
+* Render steps and rewards in real time
 
 ### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)
 --------------------
