@@ -1,7 +1,7 @@
 import os.path
 
 import gymnasium as gym
-from gymnasium.wrappers import TimeLimit, AtariPreprocessing, FlattenObservation
+from gymnasium.wrappers import TimeLimit
 import numpy as np
 import torch
 
@@ -15,12 +15,14 @@ import logging.config
 default_hyper_params = \
     agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
                              epsilon_decay=0.995, batch_size=128, num_episodes=100,
-                             target_update=5, render=False, tau=0.005)
+                             target_update=5, render=True, tau=0.005)
 
-default_environment_id = 'Breakout-v4'
+# default_environment_id = 'CartPoleReward-v1'
+default_environment_id = 'CartPoleObs-v1'
+# default_environment_id = 'CartPole-v1'
 
-default_model_saving_path = 'out/saved-models/breakout'
-default_plot_saving_path = 'out/plots/braekout'
+default_model_saving_path = 'out/saved-models/cartpole'
+default_plot_saving_path = 'out/plots/cartpole'
 
 default_is_model_saved = False
 default_is_plot_saved = False
@@ -44,10 +46,7 @@ def train(hyper_params=default_hyper_params, environment_id=default_environment_
     if hyper_params.render:
         render_mode = 'human'
 
-    env = gym.make(environment_id, render_mode=render_mode, obs_type='rgb')
-    env = AtariPreprocessing(env, screen_size=84, grayscale_obs=True, grayscale_newaxis=True, scale_obs=True,
-                             frame_skip=1)
-    env = FlattenObservation(env)
+    env = gym.make(environment_id, render_mode=render_mode, theta_threshold=60)
     env = TimeLimit(env, max_episode_steps=default_max_steps)
 
     logger.info(f'loading environments: {env.unwrapped.spec.id}')

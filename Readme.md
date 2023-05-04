@@ -14,6 +14,11 @@ Environments (/envs)
 * Modified rewards to center the cart (CartPoleReward-v1)
 * Enlarge pole angle limit (CartPoleObs-v1)
 * Random disturbance (CartPoleDisturbance-v1)
+* Render with custom text (render_with_info)
+
+### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)
+--------------------
+* Test training available
 
 Running (/runs)
 --------------------
@@ -34,18 +39,10 @@ Logging (config.ini)
 * discord channel (discord_webhook) - None
 
 
+
 :construction: Under Construction
 ==============================
 ******************
-### 1. CartPole
---------------------
-* Render steps and rewards in real time
-
-### 2. Atari [(gymnasium doc)](https://gymnasium.farama.org/environments/atari/)
---------------------
-* Implement Breakout
-  * How to use frame skipping?
-  * How to handle rgp array input?
 
 Logging (config.ini)
 --------------------

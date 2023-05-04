@@ -107,7 +107,8 @@ class DQN(nn.Module):
             steps_reached = 0
 
             if episode % 50 == 0:
-                self.logger.info(f'episode: {episode} started.')
+                print('')
+            self.logger.info(f'episode: {episode} started.')
 
             while True:
                 action = self.get_action(state)
@@ -149,7 +150,6 @@ class DQN(nn.Module):
                                                  (1 - self.hyper_params.tau) * target_net_state_dict[key]
 
                 self.target.load_state_dict(target_net_state_dict)
-                self.logger.debug(f'episode: {episode}, step: {steps_reached} policy network updated')
 
             rewards_list_for_episodes.append(reward_for_episode)
             steps_list_for_episodes.append(steps_reached)
@@ -190,8 +190,6 @@ class DQN(nn.Module):
         if len(self.memory) < self.hyper_params.batch_size:
             self.logger.debug('not enough memory, accumulating steps')
             return
-
-        self.logger.debug('updating target by replay')
 
         transitions = self.memory.sample(self.hyper_params.batch_size)
         batch = agents.utils.Transition(*zip(*transitions))
