@@ -14,7 +14,7 @@ import logging.config
 
 default_hyper_params = \
     agents.utils.HyperParams(lr=0.001, gamma=0.99, epsilon_begin=0.9, epsilon_end=0.05,
-                             epsilon_decay=0.995, batch_size=128, num_episodes=100,
+                             epsilon_decay=0.995, batch_size=128, num_episodes=2000,
                              target_update=5, render=False, tau=0.005)
 
 default_environment_id = 'Breakout-v4'

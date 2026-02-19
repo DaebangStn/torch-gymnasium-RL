@@ -5,6 +5,7 @@ venv
 *.jpg
 *.log*
 secrets.env
+roms/
 
 *.pyc
 __pycache__/
